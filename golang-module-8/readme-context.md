@@ -1,0 +1,14 @@
+- Initially we call the http.HandleFunc passing the path and the function. The function will process the request and writes response.
+- ListenAndServe method will take the port number and handles the incoming requests
+- handler function takes two parameters: ResponseWriter will be used to send the response to client and Request is for incoming request.
+- ctx:= r.Context() is for, we need to get the context connected with the HTTP so that when it is closed or disconnected we know that connection is closed.
+- I created a WithTimeout function which mean after teh specified time it will be automatically closed or else it needs to be closed when an panic occurs so I used defer with cancel.
+- Take some time value to immitate the long running task which will be used for sleep.
+- The contnext needs to be closed for two reasons: Either task is finished or time limit exceeded as specified in the timeout.
+- When either of them happens we print the respective line so I used the select statement for that
+
+--How to run:
+- Run the file from the terminal
+- In browser open localhost:8080/process which is an endpoint in this case
+- Here it could be two cases either time is out or process is executed. By default task will be execute since the sleep time is set less.
+- If we close the browser fast then it prints that the client closed the connection.
