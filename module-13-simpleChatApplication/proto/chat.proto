@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package chat;
+
+option go_package = "./proto";
+
+
+message PrivateMessageRequest {
+  string from = 1;
+  string to = 2;
+  string message = 3;
+}
+
+message PrivateMessageResponse {
+  string status = 1;
+}
+
+message JoinRequest {
+  string username = 1;
+}
+
+message ChatMessage {
+  string from = 1;
+  string message = 2;
+}
+
+service ChatService {
+  rpc SendPrivateMessage (PrivateMessageRequest) returns (PrivateMessageResponse);
+
+  rpc JoinChatRoom (JoinRequest) returns (stream ChatMessage);
+
+  rpc ChatStream (stream ChatMessage) returns (stream ChatMessage);
+}

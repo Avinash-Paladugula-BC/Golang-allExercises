@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package file;
+
+option go_package = "file-grpc/proto";
+
+
+message FileData {
+  string filename = 1;
+  bytes content = 2;
+}
+
+message UploadStatus {
+  string filename = 1;
+  bool success = 2;
+  string message = 3;
+}
+
+message DownloadRequest {
+  string filename = 1;
+}
+
+message FileMetadata {
+  string filename = 1;
+  int64 size = 2;
+  string upload_time = 3;
+}
+
+message MetadataRequest {
+  string filename = 1;
+}
+message MetadataResponse {
+  repeated FileMetadata files = 1;
+}
+
+service FileService {
+  
+  rpc UploadFile(FileData) returns (UploadStatus);
+
+  rpc DownloadFile(DownloadRequest) returns (FileData);
+
+  rpc GetFileMetadata(MetadataRequest) returns (MetadataResponse);
+}
