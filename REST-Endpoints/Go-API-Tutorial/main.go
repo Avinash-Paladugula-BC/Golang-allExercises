@@ -8,17 +8,17 @@ import (
 	"errors"
 )
 
-type book struct {
-	ID       string `json:"id`
-	Title    string `json:"title`
-	Author   string `json:"author`
-	Quantity int    `json:"quantity`
+type Book struct {
+	id       string `json:"id`
+	title    string `json:"title`
+	author   string `json:"author`
+	quantity int    `json:"quantity`
 }
 
-var books = []book{
-	{ID: "1", Title: "In Search of Lost Time", Author: "Marcel Proust", Quantity: 2},
-	{ID: "2", Title: "The Great Gatsby", Author: "F. Scott Fitzgerald", Quantity: 5},
-	{ID: "3", Title: "War and Peace", Author: "Leo Tolstoy", Quantity: 6},
+var books = []Book{
+{id: "1", title: "In Search of Lost Time", author: "Marcel Proust", quantity: 2},
+	{id: "2", title: "The Great Gatsby", author: "F. Scott Fitzgerald", quantity: 5},
+	{id: "3", title: "War and Peace", author: "Leo Tolstoy", quantity: 6},
 }
 
 // get endpoint
@@ -38,11 +38,11 @@ func checkoutBook(c *gin.Context) {
 		return
 	}
 
-	if book.Quantity <= 0 {
+	if book.quantity <= 0 {
 		c.IndentedJSON(http.StatusBadRequest, gin.H{"message": "book not available"})
 		return
 	}
-	book.Quantity -= 1
+	book.quantity -= 1
 	c.IndentedJSON(http.StatusOK, book)
 }
 
@@ -57,7 +57,7 @@ func returnBook(c *gin.Context) {
 		c.IndentedJSON(http.StatusNotFound, gin.H{"message": "BOok not found"})
 		return
 	}
-	book.Quantity += 1
+	book.quantity += 1
 	c.IndentedJSON(http.StatusOK, book)
 }
 
@@ -72,10 +72,10 @@ func bookById(c *gin.Context) {
 	c.IndentedJSON(http.StatusOK, book)
 }
 
-func getBookById(id string) (*book, error) {
-	for i, b := range books {
-		if b.ID == id {
-			return &books[i], nil
+func getBookById(id string) (*Book, error) {
+	for _, b := range books {
+		if b.id == id {
+			return &b, nil
 		}
 	}
 	return nil, errors.New("book not found")
@@ -83,7 +83,7 @@ func getBookById(id string) (*book, error) {
 
 // post
 func createBook(c *gin.Context) {
-	var newBook book
+	var newBook Book
 	if err := c.BindJSON(&newBook); err != nil {
 		return
 	}

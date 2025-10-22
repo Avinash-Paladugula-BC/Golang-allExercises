@@ -14,3 +14,18 @@ type Product struct {
 
 	Ratings []Rating `json:"ratings" gorm:"foreignKey:ProductID"`
 }
+
+type Rating struct {
+	gorm.Model
+	ProductID uint
+	Name      string
+	Review    string
+	Rating    int
+}
+
+type User struct {
+	gorm.Model
+	Name     string
+	Email    string `gorm:"uniqueIndex" json:"email"`
+	Password string
+}

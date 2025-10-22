@@ -9,7 +9,7 @@ import (
 
 func RegisterRoutes(r *gin.Engine) {
 	r.GET("/api/products", controllers.GetAllProducts)
-	r.GET("/api/products/:id", controllers.GetProduct)
+	r.GET("/api/products/:id", controllers.GetProductById)
 	r.POST("/api/products/create", controllers.CreateProduct)
 	r.GET("/api/products/:id/reviews", controllers.GetReviews)
 	r.POST("/api/products/:id/reviews/create", controllers.CreateReview)

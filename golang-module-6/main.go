@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -20,27 +21,44 @@ type User struct {
 func main() {
 	url := "https://jsonplaceholder.typicode.com/users"
 
+	err := jsonReader(url)
+	if err!=nil{
+		log.Print(err.Error())
+	}
+
+}
+
+func jsonReader(url string) error{
+
 	// http.Get() method will return the pointer to the response
 	response, err := http.Get(url)
-	if err != nil {
-		fmt.Println("Error fetching data:", err)
-		panic("Error fetching data")
+	if err != nil && response.Body!=nil{
+		return fmt.Errorf("error fetching data: %w", err)
+		// return fmt.Errorf("error fetching data: %w", err)
+		// fmt.Errorf("Error fetching data: ",err.Error())
+		// panic(fmt.Errorf("error fetching data: %w", err))
+		// fmt.Errorf(err.Error())
+		// fmt.Println("Error fetching data:", err)
+		// panic("Error fetching data")
+
 	}
 	defer response.Body.Close()
 
 	// getting the entire content from the page  [ioutil.ReadAll() is depricated so using io.ReadAll()]
 	body, err := io.ReadAll(response.Body)
 	if err != nil {
-		fmt.Println("Error reading response:", err)
-		os.Exit(1)
+		return fmt.Errorf("error while reading the body: %w", err)
+		// fmt.Println("Error reading response:", err)
+		// os.Exit(1)
 	}
 
 	// the entire information from the body in unmarshalled into result
 	var result []User
 	err = json.Unmarshal(body, &result)
 	if err != nil {
-		fmt.Println("Error parsing JSON:", err)
-		os.Exit(1)
+		// fmt.Println("Error parsing JSON:", err)
+		return fmt.Errorf("error while unmarshalling: %w", err)
+		// os.Exit(1)
 	}
 	// fmt.Println(result)
 	// ...............................................
@@ -58,17 +76,19 @@ func main() {
 	dirName := "user_data"
 	err = os.Mkdir(dirName, 0755)
 	if err != nil {
-		fmt.Println("Error while creating the directory : ", err)
-		fmt.Println("Delete the user_data directory if it is already created")
-		return
+		return fmt.Errorf("error while creating directory: %w", err)
+		// fmt.Println("Error while creating the directory : ", err)
+		// fmt.Println("Delete the user_data directory if it is already created")
+		// return
 	}
 	fmt.Println("Directory created.......")
 
 	// the below line will convert the slice of struct into the JSON string
 	jsonData, err := json.MarshalIndent(result, "", "  ")
 	if err != nil {
-		fmt.Println("Error formatting JSON:", err)
-		os.Exit(1)
+		return fmt.Errorf("error when indenting: %w", err)
+		// fmt.Println("Error formatting JSON:", err)
+		// os.Exit(1)
 	}
 
 	fmt.Println(string(jsonData))
@@ -76,14 +96,16 @@ func main() {
 	filePath := filepath.Join(dirName, "users.json")
 	file, err := os.Create(filePath)
 	if err != nil {
-		fmt.Println("Error creating file:", err)
-		return
+		return fmt.Errorf("error when creating file: %w", err)
+		// fmt.Println("Error creating file:", err)
+		// return
 	}
 	defer file.Close()
 	_, err = file.WriteString(string(jsonData))
 	if err != nil {
-		fmt.Println("Error writing to file:", err)
-		return
+		return fmt.Errorf("error when writing into file: %w", err)
+		// fmt.Println("Error writing to file:", err)
+		// return
 	}
 
 	fmt.Println("JSON data: ")
@@ -100,7 +122,7 @@ func main() {
 	// }
 
 	// fmt.Println("Directory created:", dirName)
-
+	return nil
 }
 
 func downloadFile(url, filepath string) error {

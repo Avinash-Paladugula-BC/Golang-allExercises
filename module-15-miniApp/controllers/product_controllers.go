@@ -15,7 +15,7 @@ func GetAllProducts(c *gin.Context) {
 	c.JSON(http.StatusOK, products)
 }
 
-func GetProduct(c *gin.Context) {
+func GetProductById(c *gin.Context) {
 	id := c.Param("id")
 	var product models.Product
 	result := config.DB.Preload("Ratings").First(&product, id)
@@ -33,6 +33,10 @@ func CreateProduct(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
-	config.DB.Create(&product)
+	result := config.DB.Create(&product)
+	if result.Error != nil{
+		c.JSON(http.StatusInternalServerError, gin.H{"error" : result.Error.Error()})
+		return
+	}
 	c.JSON(http.StatusCreated, product)
 }

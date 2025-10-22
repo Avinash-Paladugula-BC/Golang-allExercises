@@ -25,22 +25,28 @@ func main() {
 	}
 
 	// create channel of size 5
-	ch := make(chan int, 5)
+	ch := make(chan User, 5)
+	defer close(ch)
 	// call them
 	var wg sync.WaitGroup
 	for idx, user_id := range user_ids {
 		fmt.Println(idx)
-		ch <- user_id
 		wg.Add(1)
-		go func(user_id int) {
+		go func(ch chan<- User, user_id int){
+			fmt.Println("entered the send channel")
 			user, err := getUserByID(user_id)
 			if err != nil {
 				fmt.Println("error: ", err)
 			}
-			fmt.Println(user)
-			<-ch
+			ch<-user	
 			wg.Done()
-		}(user_id)
+		}(ch, user_id)
+		wg.Add(1)
+		go func(ch <-chan User){
+			fmt.Println("entered the receive channel")
+			fmt.Println(<-ch)
+			wg.Done()
+		}(ch)
 	}
 	wg.Wait()
 

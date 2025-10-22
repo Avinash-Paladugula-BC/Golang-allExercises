@@ -42,13 +42,23 @@ func processHandler(w http.ResponseWriter, r *http.Request) {
 	case <-ctx.Done():
 		// Context ended: either timeout or client cancel
 		err := ctx.Err()
-		if err == context.DeadlineExceeded {
+		switch err{
+		case context.DeadlineExceeded:
 			http.Error(w, "Request timed out", http.StatusGatewayTimeout)
 			fmt.Println("Task cancelled since timeout reached")
-			} else if err == context.Canceled {
-				http.Error(w, "Request cancelled by client", http.StatusRequestTimeout)
+			
+		case context.Canceled:
+			http.Error(w, "Request cancelled by client", http.StatusRequestTimeout)
 				fmt.Println("Task cancelled since connection was closed")
-			}
+			
 		}
+		// if err == context.DeadlineExceeded {
+		// 	http.Error(w, "Request timed out", http.StatusGatewayTimeout)
+		// 	fmt.Println("Task cancelled since timeout reached")
+		// 	} else if err == context.Canceled {
+		// 		http.Error(w, "Request cancelled by client", http.StatusRequestTimeout)
+		// 		fmt.Println("Task cancelled since connection was closed")
+		// 	}
+		// }
 	}
-	
+}

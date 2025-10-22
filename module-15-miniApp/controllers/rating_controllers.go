@@ -3,10 +3,12 @@ package controllers
 import (
 	"bc_training_app/config"
 	"bc_training_app/models"
+	"errors"
 	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"gorm.io/gorm"
 )
 
 func GetReviews(c *gin.Context) {
@@ -34,6 +36,16 @@ func CreateReview(c *gin.Context) {
 
 	if review.Rating < 1 || review.Rating > 5 {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Rating must be between 1 and 5"})
+		return
+	}
+
+	var product models.Product
+	if err := config.DB.First(&product, productID).Error; err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			c.JSON(http.StatusNotFound, gin.H{"error" : "Product not fount"})
+			return 
+		}
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error})
 		return
 	}
 

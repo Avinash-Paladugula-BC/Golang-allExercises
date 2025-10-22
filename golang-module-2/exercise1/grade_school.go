@@ -31,10 +31,11 @@ func Grade_school() {
 
 func (s *School) AddStudent(name string, grade int) {
 	s.studentList[grade] = append(s.studentList[grade], name)
-	sort.Strings(s.studentList[grade])
+	// sort.Strings(s.studentList[grade])
 }
 
 func (s *School) StudentsListInGrade(grade int) {
+	sort.Strings(s.studentList[grade])
 	for _, student := range s.studentList[grade] {
 		fmt.Print(student, " ")
 	}

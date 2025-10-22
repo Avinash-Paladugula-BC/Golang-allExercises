@@ -13,7 +13,7 @@ func main() {
 	exercism.Sublist_exercise()
 
 	fmt.Println("\nWord Coutn exercise:")
-	exercism.Word_coun()
+	exercism.Word_count()
 
 	fmt.Println("\nETL Exercise:")
 	exercism.Etl()

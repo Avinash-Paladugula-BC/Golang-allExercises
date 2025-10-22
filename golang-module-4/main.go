@@ -4,14 +4,15 @@ import (
 	"flag"
 	"fmt"
 	"strconv"
+	"strings"
 )
 
 func main() {
 	println("hello world")
 
-	defer func(){
-		if r:=recover(); r!=nil{
-			fmt.Println("Unexpected error: ",r)
+	defer func() {
+		if r := recover(); r != nil {
+			fmt.Println("Unexpected error: ", r)
 		}
 	}()
 
@@ -32,18 +33,11 @@ func main() {
 		}
 		sum += number
 	}
-	fmt.Println("Sum : ",sum)
+	fmt.Println("Sum : ", sum)
 }
 
-func splitInput(nums_string string) []string{
+func splitInput(nums_string string) []string {
 	var result []string
-	start:=0
-	for idx,char := range nums_string{
-		if char==','{
-			result = append(result, nums_string[start:idx])
-			start=idx+1
-		}
-	}
-	result = append(result, nums_string[start:])
+	result = strings.Split(nums_string, ",")
 	return result
 }

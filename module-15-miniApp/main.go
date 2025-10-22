@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"bc_training_app/config"
-	// "bc_training_app/migrations"  
+	"bc_training_app/migrations"  
 	"bc_training_app/routes"
 
 	"github.com/gin-gonic/gin"
@@ -14,8 +14,8 @@ import (
 func main() {
 	config.ConnectDB()
 
-	// Migration alrady executed, so need to comment
-	// migrations.AutoMigrations(config.DB)
+	// Migration already executed, so need to comment
+	migrations.AutoMigrations(config.DB)
 	r := gin.Default()
 	routes.RegisterRoutes(r)
 	port := os.Getenv("PORT")

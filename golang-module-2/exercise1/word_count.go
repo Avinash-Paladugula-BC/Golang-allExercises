@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func Word_coun() {
+func Word_count() {
 	
 	text := "\"That's the password: 'PASSWORD 123'!\", cried the Special Agent.\nSo I fled."
 	re := regexp.MustCompile(`[a-zA-Z0-9]+(?:'[a-zA-Z0-9]+)?`)

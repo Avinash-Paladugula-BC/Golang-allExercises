@@ -18,7 +18,7 @@ ForLoop:
 			fmt.Println("Enter value to be pushed: ")
 			var input string
 			fmt.Scanln(&input)
-			var val any=input
+			var val any = input
 			q.enqueue(val)
 		case 2:
 			val, exists := q.dequeue()
@@ -29,10 +29,10 @@ ForLoop:
 			}
 		case 3:
 			peekValue, flag := q.peek()
-			if !flag{
+			if !flag {
 				fmt.Println("Queue is empty")
-			}else{
-				fmt.Println("Peek value is: ",peekValue)
+			} else {
+				fmt.Println("Peek value is: ", peekValue)
 			}
 		default:
 			break ForLoop
@@ -46,6 +46,7 @@ func printOptions() {
 	fmt.Println("0 : Print options")
 	fmt.Println("1 : Enqueue")
 	fmt.Println("2 : Dequeue")
+	fmt.Println("3 : Peek")
 	fmt.Println("Default : End the operations")
 }
 func (q *Queue[T]) enqueue(value T) {
@@ -60,11 +61,11 @@ func (q *Queue[T]) dequeue() (T, bool) {
 	q.values = q.values[1:]
 	return pop, true
 }
-func (q *Queue[T]) peek() (T,bool){
+func (q *Queue[T]) peek() (T, bool) {
 	var val T
-	if len(q.values)==0{
-		return val,false
+	if len(q.values) == 0 {
+		return val, false
 	}
 	val = q.values[0]
-	return val,true
+	return val, true
 }
