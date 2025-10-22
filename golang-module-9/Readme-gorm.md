@@ -1,0 +1,13 @@
+- To receive the database name from the command line, I used os.Args which reads and returns the list of values passed in the console as an array.
+- All the environment variables like database name, password and username are written in separate package and imported to use them.
+- Esatablish the connection using gorm.Open() method
+-  It return error if connection not established so handled it with a if condition
+- Create the table using CreateTable(&struct_name{})
+- Initially a struct and some default posts are created, so iterated those default posts and added them to the database.
+- Create method will add a new post to the database. While creating if error occurs then need to handle the error with a check.
+- Read method will print all the posts table records
+- Update method will Update takes in the ID value i.e., primary key and updates the value of the records
+- Delete method will delete the particular record matching the ID
+- Search method will take the ID as input and prints those records that match the input values
+- Using the create, update , delete, read, search methods we perform operations and using the methods provided by gorm we can interact with the database.
+- In all the cases when ever there are chances of occuring errors I made a check and printed what is the error.

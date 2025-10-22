@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+
+
+package employee;
+
+option go_package = "./proto";
+
+message Employee {
+  int32 id = 1;
+  string name = 2;
+}
+
+message EmployeeRequest {
+  int32 id = 1;
+}
+
+message EmployeeResponse {
+  int32 id = 1;
+  string name = 2;
+}
+
+message EmployeeCount {
+  int32 count = 1;
+}
+
+service EmployeeService {
+
+  rpc GetEmployee(EmployeeRequest) returns (EmployeeResponse);
+
+  rpc GetEmployees(EmployeeRequest) returns (stream EmployeeResponse);
+
+  rpc AddEmployees(stream Employee) returns (EmployeeCount);
+
+  rpc BidirectionalGetEmployees(stream EmployeeRequest) returns (stream EmployeeResponse);
+}
